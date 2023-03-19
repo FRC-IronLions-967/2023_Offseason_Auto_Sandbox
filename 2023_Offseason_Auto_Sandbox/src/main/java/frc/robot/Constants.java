@@ -13,7 +13,15 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-  public static class OperatorConstants {
-    public static final int kDriverControllerPort = 0;
-  }
+  //general constants
+
+  //auto constants
+  public static final double kAutoInitTimeout = 1.0; //seconds
+  public static final double kAutoDriveTimeout = 2.0; //seconds
+  public static final double kAutoDriveReverseX = 0.0;
+  public static final double kAutoDriveReverseY = -0.5;
+  public static final double kAutoDriveTurnLeftX = 0.4;
+  public static final double kAutoDriveTurnRightY = -0.1;
+
+  //teleop constants
 }

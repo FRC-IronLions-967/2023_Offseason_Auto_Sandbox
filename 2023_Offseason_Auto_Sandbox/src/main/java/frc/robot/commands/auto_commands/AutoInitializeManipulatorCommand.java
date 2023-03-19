@@ -4,20 +4,16 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.auto.AutoStateTracker;
 import frc.robot.subsystems.SubsystemsInstance;
 
-public class AutoDriveCommand extends WaitCommand {
+public class AutoInitializeManipulatorCommand extends WaitCommand {
   
   private SubsystemsInstance inst;
   private AutoStateTracker stateTracker;
-  private double xInput;
-  private double yInput;
   private boolean hasTimedOut;
 
-  public AutoDriveCommand (AutoStateTracker stateTracker, double xInput, double yInput, double timeout) {
+  public AutoInitializeManipulatorCommand (AutoStateTracker stateTracker, double timeout) {
     super(timeout);
     hasTimedOut = false;
 
-    this.xInput = xInput;
-    this.yInput = yInput;
     this.stateTracker = stateTracker;
 
     inst = SubsystemsInstance.getInstance();
@@ -27,7 +23,7 @@ public class AutoDriveCommand extends WaitCommand {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    inst.driveSubsystem.arcadeDrive(xInput, yInput);
+    inst.exampleSubsystem.initializeSystem();
   }
 
   @Override
@@ -35,7 +31,7 @@ public class AutoDriveCommand extends WaitCommand {
     if(super.isFinished()){
       hasTimedOut = true;
     }
-    return hasTimedOut || inst.driveSubsystem.exampleCondition();
+    return hasTimedOut || inst.exampleSubsystem.exampleCondition();
   }
 
 
@@ -43,8 +39,7 @@ public class AutoDriveCommand extends WaitCommand {
   @Override
   public void end(boolean interrupted) {
     super.end(interrupted);
-    inst.driveSubsystem.arcadeDrive(0.0, 0.0);
-
+    
     //only allow more commands if this one did not time out
     if(!hasTimedOut){
       stateTracker.nextState();

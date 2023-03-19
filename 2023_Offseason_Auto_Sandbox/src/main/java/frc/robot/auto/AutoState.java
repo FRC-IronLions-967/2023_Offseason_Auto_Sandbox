@@ -8,5 +8,5 @@ public enum AutoState {
     DRIVE_BACK,
     DRIVE_TURN_RIGHT,
     DRIVE_TURN_LEFT,
-    FINISHED,
+    IDLE, //IDLE is a known safe state where the robot will not move or perform actions
 }

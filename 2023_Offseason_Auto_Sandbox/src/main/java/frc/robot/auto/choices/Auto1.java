@@ -1,10 +1,11 @@
 package frc.robot.auto.choices;
 
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.auto.AutoState;
 import frc.robot.auto.AutoStateTracker;
 import frc.robot.auto.AutonomousInterface;
+import frc.robot.Constants;
+import frc.robot.commands.auto_commands.AutoInitializeManipulatorCommand;
 import frc.robot.subsystems.SubsystemsInstance;
 
 public class Auto1 implements AutonomousInterface {
@@ -13,14 +14,12 @@ public class Auto1 implements AutonomousInterface {
     private AutoState[] auto1States = {
         AutoState.START,
         AutoState.INITIALIZING,
-        AutoState.FINISHED
+        AutoState.IDLE
     };
 
     private boolean autoInit;
-    private SubsystemsInstance inst; 
 
     public Auto1(){
-        inst = SubsystemsInstance.getInstance();
         stateTracker = new AutoStateTracker(auto1States);
     }
 
@@ -33,13 +32,16 @@ public class Auto1 implements AutonomousInterface {
     public void periodic() {
         switch(stateTracker.getCurrentState()) {
             case START:
+                //Do not begin running in periodic until init() has been called
                 if(autoInit){
-                    
+                    CommandScheduler.getInstance().schedule(new AutoInitializeManipulatorCommand(stateTracker, Constants.kAutoInitTimeout));
+                    stateTracker.inProgress();
                 }
                 break;
             case INITIALIZING:
                 break;
-            case FINISHED:
+            case IDLE:
+                //No actions should be performed in IDLE
                 break;
             default:
                 break;
